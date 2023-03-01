@@ -6,12 +6,17 @@ public class Ball : MonoBehaviour
 {
     //Velocidad de la pelota
     public float speed = 25;
+    
+    //Referencia a la posición inicial de la pelota
+    public Vector2 ballInit;
 
     // Start is called before the first frame update
     void Start()
     {
-        //La bola se mueve hacia arriba
-        GetComponent<Rigidbody2D>().velocity = Vector2.up * speed;// Vector2.up = new Vector2(0, 1)
+        //Reiniciamos la bola
+        RestartBallMovement();
+        //Recogemos la posición inicial de la pelota
+        ballInit = transform.position;
     }
 
     // Update is called once per frame
@@ -59,5 +64,27 @@ public class Ball : MonoBehaviour
     private float HitFactor(Vector2 ballPosition, Vector2 racketPosition, float racketWidth)
     {
         return (ballPosition.x - racketPosition.x) / racketWidth;
+    }
+
+    //Método para resetear la pelota
+    public void ResetBall()
+    {
+        //Paramos la velocidad de la pelota
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        //Ponemos a la pelota en su posición inicial
+        transform.position = ballInit;
+        //Si aún nos quedan vidas restantes, reseteamos el movimiento de la bola y sino no
+        if(GameManager.sharedInstance.lives > 0)
+        {
+            //Esperamos unos segundos y volvemos a decirle a la bola que se mueva
+            Invoke("RestartBallMovement", 2.0f);
+        }
+    }
+
+    //Método para relanzar la bola
+    private void RestartBallMovement()
+    {
+        //La bola se mueve hacia arriba
+        GetComponent<Rigidbody2D>().velocity = Vector2.up * speed;// Vector2.up = new Vector2(0, 1)
     }
 }
