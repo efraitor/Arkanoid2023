@@ -17,6 +17,8 @@ public class Ball : MonoBehaviour
         RestartBallMovement();
         //Recogemos la posición inicial de la pelota
         ballInit = transform.position;
+        //Llamamos a la Corrutina
+        StartCoroutine(UpgradeDifficulty());
     }
 
     // Update is called once per frame
@@ -36,6 +38,8 @@ public class Ball : MonoBehaviour
     * Al chocar el objeto contra el que choca, le pasa su colisión por parámetro */
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Cada vez que choca la pelota contra algo reproduce su sonido
+        GetComponent<AudioSource>().Play();
         //Si la pelota ha colisionado con la pala izquierda
         if (collision.gameObject.name == "Racket")
         {
@@ -69,6 +73,8 @@ public class Ball : MonoBehaviour
     //Método para resetear la pelota
     public void ResetBall()
     {
+        //Reseteamos la bola a la velocidad inicial que tenía    
+        speed = 10f;
         //Paramos la velocidad de la pelota
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         //Ponemos a la pelota en su posición inicial
@@ -86,5 +92,20 @@ public class Ball : MonoBehaviour
     {
         //La bola se mueve hacia arriba
         GetComponent<Rigidbody2D>().velocity = Vector2.up * speed;// Vector2.up = new Vector2(0, 1)
+    }
+
+    //Corrutina para aumentar la dificultad del juego acelerando la bola
+    //La corrutina se establece fuera del tiempo del bucle de juego, se usa en acciones que deben hacerse en un momento puntual, independientes de lo demás
+    private IEnumerator UpgradeDifficulty()
+    {
+        //Hacemos un bucle siempre verdadero, para que cada segundo aumente un poco la velocidad de la pelota
+        while (true) //Mientras la condición del bucle se cumpla lo hace. Así le indicamos que la condición siempre será verdad
+        {
+            //Hace que la corrutina se espere un segundo
+            yield return new WaitForSeconds(1.0f);
+            //Aumento de la velocidad de la bola
+            //speed += 0.5f;
+            speed *= 1.005f;
+        }
     }
 }

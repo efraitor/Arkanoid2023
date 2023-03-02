@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; //Para cambiar entre escenas
 using UnityEngine.UI; //Librería para la interfaz de Unity
+using TMPro; //Librería para usar los componentes del TextMeshPro
 
 public class GameManager : MonoBehaviour
 {
     //Referencias para las imágenes de las vidas
     public Image live1, live2, live3;
+    //Texto de GameOver
+    public TextMeshProUGUI gameOverText;
 
     //Iniciamos el contador de vidas
     public int lives = 3;
@@ -26,7 +29,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Desactivamos la imagen GameOver
+        gameOverText.enabled = false;
     }
 
     // Update is called once per frame
@@ -89,6 +93,8 @@ public class GameManager : MonoBehaviour
                 live2.enabled = false;
                 //Desactivamos la imagen de la vida 1
                 live1.enabled = false;
+                //Activamos la imagen GameOver
+                gameOverText.enabled = true;
                 break;
             //En cualquier otro caso
             default:

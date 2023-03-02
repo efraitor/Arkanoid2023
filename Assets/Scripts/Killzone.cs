@@ -29,6 +29,8 @@ public class Killzone : MonoBehaviour
             //collision.gameObject.SetActive(false);
             //Llamamos al método que resetea la pelota
             collision.gameObject.GetComponent<Ball>().ResetBall();
+            //Reproducimos el sonido de perder una vida
+            GetComponent<AudioSource>().Play();
         }
     }
 }
